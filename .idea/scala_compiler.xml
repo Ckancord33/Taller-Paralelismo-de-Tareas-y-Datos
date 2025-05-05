@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="Pruebas_Paralelizacion,Pruebas_Paralelizacion.main,Pruebas_Paralelizacion.test,Taller Paralelismo de Tareas y Datos" />
+    <profile name="sbt 2" modules="Taller Paralelismo de Tareas y Datos.main,Taller Paralelismo de Tareas y Datos.test">
+      <option name="implicitConversions" value="true" />
+      <option name="deprecationWarnings" value="true" />
+    </profile>
+  </component>
+</project>
