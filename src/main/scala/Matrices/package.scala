@@ -124,23 +124,25 @@ package object Matrices {
     if (longitud > limite) {
       val mitad = m1.length / 2
 
-      val t1 = task(subMatriz(m1, 0, 0, mitad))
-      val t2 = task(subMatriz(m1, 0, mitad, mitad))
-      val t3 = task(subMatriz(m1, mitad, 0, mitad))
-      val t4 = task(subMatriz(m1, mitad, mitad, mitad))
+      val a_11 = subMatriz(m1, 0, 0, mitad)
+      val a_12 = subMatriz(m1, 0, mitad, mitad)
+      val a_21 = subMatriz(m1, mitad, 0, mitad)
+      val a_22 = subMatriz(m1, mitad, mitad, mitad)
 
-      val t5 = task(subMatriz(m2, 0, 0, mitad))
-      val t6 = task(subMatriz(m2, 0, mitad, mitad))
-      val t7 = task(subMatriz(m2, mitad, 0, mitad))
-      val t8 = task(subMatriz(m2, mitad, mitad, mitad))
+      val b_11 = subMatriz(m2, 0, 0, mitad)
+      val b_12 = subMatriz(m2, 0, mitad, mitad)
+      val b_21 = subMatriz(m2, mitad, 0, mitad)
+      val b_22 = subMatriz(m2, mitad, mitad, mitad)
 
-      val (a_11, a_12, a_21, a_22, b_11, b_12, b_21, b_22) =
-        (t1.join(), t2.join(), t3.join(), t4.join(), t5.join(), t6.join(), t7.join(), t8.join())
+      val t1 = task(parallel(multMatrizRec(a_11, b_11), multMatrizRec(a_12, b_21)))
+      val t2 = task(parallel(multMatrizRec(a_11, b_12), multMatrizRec(a_12, b_22)))
+      val t3 = task(parallel(multMatrizRec(a_21, b_11), multMatrizRec(a_22, b_21)))
+      val t4 = task(parallel(multMatrizRec(a_21, b_12), multMatrizRec(a_22, b_22)))
 
-      val (mult1, mult2) = parallel(multMatrizRec(a_11, b_11), multMatrizRec(a_12, b_21))
-      val (mult3, mult4) = parallel(multMatrizRec(a_11, b_12), multMatrizRec(a_12, b_22))
-      val (mult5, mult6) = parallel(multMatrizRec(a_21, b_11), multMatrizRec(a_22, b_21))
-      val (mult7, mult8) = parallel(multMatrizRec(a_21, b_12), multMatrizRec(a_22, b_22))
+      val (mult1, mult2) = t1.join()
+      val (mult3, mult4) = t2.join()
+      val (mult5, mult6) = t3.join()
+      val (mult7, mult8) = t4.join()
 
       val c_11 = sumMatriz(mult1, mult2)
       val c_12 = sumMatriz(mult3, mult4)
