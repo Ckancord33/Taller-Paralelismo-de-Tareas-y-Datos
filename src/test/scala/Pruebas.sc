@@ -56,8 +56,9 @@ for {
 
 val algoritmosMult: ArraySeq[(Matriz,Matriz)=>Matriz] = ArraySeq(multMatriz,multMatrizPar,multMatrizRec,multMatrizRecPar,multStrassen,multStrassenPar)
 
-val m1 = matrizAlAzar(4,2)
-val m2 = matrizAlAzar(4,2)
+val m1 = matrizAlAzar(64,2)
+val m2 = matrizAlAzar(64,2)
+
 
 for (
   i <- 0 to 5 by 2

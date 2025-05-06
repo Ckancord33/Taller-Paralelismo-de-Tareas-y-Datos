@@ -222,7 +222,7 @@ package object Matrices {
 
   def multStrassenPar(m1:Matriz,m2:Matriz): Matriz ={
     val longitud = m1.length
-    val limite = 5
+    val limite = 32
     if (longitud > limite) {
       val mitad = m1.length / 2
 
@@ -247,10 +247,10 @@ package object Matrices {
       val s9 = restaMatriz(a_11, a_21)
       val s10 = sumMatriz(b_11, b_12)
 
-      val t1 = task(parallel(multStrassen(a_11, s1),multStrassen(s2, b_22)))
-      val t2 = task(parallel(multStrassen(s3, b_11),multStrassen(a_22, s4)))
-      val t3 = task(parallel(multStrassen(s5, s6),multStrassen(s7, s8)))
-      val t4 = task(multStrassen(s9, s10))
+      val t1 = task(parallel(multStrassenPar(a_11, s1),multStrassenPar(s2, b_22)))
+      val t2 = task(parallel(multStrassenPar(s3, b_11),multStrassenPar(a_22, s4)))
+      val t3 = task(parallel(multStrassenPar(s5, s6),multStrassenPar(s7, s8)))
+      val t4 = task(multStrassenPar(s9, s10))
 
       val (mult1, mult2) = t1.join()
       val (mult3, mult4) = t2.join()
