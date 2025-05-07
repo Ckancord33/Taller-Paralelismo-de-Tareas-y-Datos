@@ -45,7 +45,7 @@ package object Matrices {
   def multMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
     val m2Trans = transpuesta(m2)
     def recursiva(m1: Matriz, m2Trans: Matriz): Matriz = {
-      val limite = 2
+      val limite = 4
       val mitad = m1.length / 2
       if (mitad > limite) {
         val (pedazo1, pedazo2) = parallel(recursiva(m1.take(mitad), m2Trans), recursiva(m1.drop(mitad), m2Trans))
@@ -58,12 +58,6 @@ package object Matrices {
       }
     }
     recursiva(m1, m2Trans)
-  }
-
-  def multMatrizParSheila(m1: Matriz, m2: Matriz): Matriz = {
-    val l = m1.length
-    val v = Vector.tabulate(l, l)((i, j) => task(prodPunto(m1(i), transpuesta(m2)(j))))
-    v.map(x => x.map(y => y.join()))
   }
 
 
