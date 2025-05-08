@@ -36,7 +36,7 @@ package object Matrices {
   // Ejercicio 1.1.1
   def multMatriz(m1: Matriz, m2: Matriz): Matriz = {
     val m2Trans = transpuesta(m2)
-    Vector.tabulate(m1.length, m2.length)((i,j) => {
+    Vector.tabulate(m1.length, m2.length)((i, j) => {
       prodPunto(m1(i), m2Trans(j))
     })
   }
@@ -44,6 +44,7 @@ package object Matrices {
   // Ejercicio 1.1.2
   def multMatrizPar(m1: Matriz, m2: Matriz): Matriz = {
     val m2Trans = transpuesta(m2)
+
     def recursiva(m1: Matriz, m2Trans: Matriz): Matriz = {
       val limite = 4
       val mitad = m1.length / 2
@@ -57,6 +58,7 @@ package object Matrices {
         })
       }
     }
+
     recursiva(m1, m2Trans)
   }
 
@@ -65,14 +67,16 @@ package object Matrices {
   def subMatriz(m: Matriz, i: Int, j: Int, l: Int): Matriz = {
     // Dada m, matriz cuadrada de NxN, i<=j<=N, i+l<=N, j+l<=N,
     // devuelve la submatriz de nxn correspondiente a m[i..i+(n-1), j..j+(n-1)]
-    Vector.tabulate(l,l)((x,y)=>(m(i+x)(j+y)))
+    Vector.tabulate(l, l)((x, y) => (m(i + x)(j + y)))
   }
 
   // Ejercicio 1.2.2
   def sumMatriz(m1: Matriz, m2: Matriz): Matriz = {
     // recibe m1 y m2 matrices cuadradas del mismo tamaño, potencia de 2
     // y devuelve la suma de las 2 matrices
-    Vector.tabulate(m1.length, m2.length)((i,j) => {m1(i)(j) + m2(i)(j)})
+    Vector.tabulate(m1.length, m2.length)((i, j) => {
+      m1(i)(j) + m2(i)(j)
+    })
   }
 
   // Ejercicio 1.2.3
@@ -80,7 +84,7 @@ package object Matrices {
     // recibe m1 y m2 matrices cuadradas del mismo tamaño, potencia de 2
     // y devuelve la multiplicación de las 2 matrices
     val longitud = m1.length
-    if(longitud > 1) {
+    if (longitud > 1) {
       val mitad = m1.length / 2
 
       val a_11 = subMatriz(m1, 0, 0, mitad)
@@ -98,14 +102,14 @@ package object Matrices {
       val c_21 = sumMatriz(multMatrizRec(a_21, b_11), multMatrizRec(a_22, b_21))
       val c_22 = sumMatriz(multMatrizRec(a_21, b_12), multMatrizRec(a_22, b_22))
 
-      Vector.tabulate(longitud, longitud)((i,j) => {
+      Vector.tabulate(longitud, longitud)((i, j) => {
         if (i < mitad && j < mitad) c_11(i)(j)
         else if (i < mitad && j >= mitad) c_12(i)(j - mitad)
         else if (i >= mitad && j < mitad) c_21(i - mitad)(j)
         else c_22(i - mitad)(j - mitad)
       })
 
-    } else{
+    } else {
       Vector(Vector(m1(0)(0) * m2(0)(0)))
     }
   }
@@ -155,15 +159,15 @@ package object Matrices {
     }
   }
 
-  def restaMatriz(m1:Matriz,m2:Matriz): Matriz = {
+  def restaMatriz(m1: Matriz, m2: Matriz): Matriz = {
     Vector.tabulate(m1.length, m2.length)((i, j) => {
       m1(i)(j) - m2(i)(j)
     })
   }
 
-  def multStrassen(m1:Matriz,m2:Matriz): Matriz = {
+  def multStrassen(m1: Matriz, m2: Matriz): Matriz = {
     val longitud = m1.length
-    if(longitud > 1){
+    if (longitud > 1) {
       val mitad = m1.length / 2
 
       val a_11 = subMatriz(m1, 0, 0, mitad)
@@ -176,28 +180,28 @@ package object Matrices {
       val b_21 = subMatriz(m2, mitad, 0, mitad)
       val b_22 = subMatriz(m2, mitad, mitad, mitad)
 
-      val s1 = restaMatriz(b_12,b_22)
-      val s2 = sumMatriz(a_11,a_12)
-      val s3 = sumMatriz(a_21,a_22)
-      val s4 = restaMatriz(b_21,b_11)
-      val s5 = sumMatriz(a_11,a_22)
-      val s6 = sumMatriz(b_11,b_22)
-      val s7 = restaMatriz(a_12,a_22)
-      val s8 = sumMatriz(b_21,b_22)
-      val s9 = restaMatriz(a_11,a_21)
-      val s10 = sumMatriz(b_11,b_12)
+      val s1 = restaMatriz(b_12, b_22)
+      val s2 = sumMatriz(a_11, a_12)
+      val s3 = sumMatriz(a_21, a_22)
+      val s4 = restaMatriz(b_21, b_11)
+      val s5 = sumMatriz(a_11, a_22)
+      val s6 = sumMatriz(b_11, b_22)
+      val s7 = restaMatriz(a_12, a_22)
+      val s8 = sumMatriz(b_21, b_22)
+      val s9 = restaMatriz(a_11, a_21)
+      val s10 = sumMatriz(b_11, b_12)
 
-      val p1 = multStrassen(a_11,s1)
-      val p2 = multStrassen(s2,b_22)
-      val p3 = multStrassen(s3,b_11)
-      val p4 = multStrassen(a_22,s4)
-      val p5 = multStrassen(s5,s6)
-      val p6 = multStrassen(s7,s8)
-      val p7 = multStrassen(s9,s10)
+      val p1 = multStrassen(a_11, s1)
+      val p2 = multStrassen(s2, b_22)
+      val p3 = multStrassen(s3, b_11)
+      val p4 = multStrassen(a_22, s4)
+      val p5 = multStrassen(s5, s6)
+      val p6 = multStrassen(s7, s8)
+      val p7 = multStrassen(s9, s10)
 
       val c_11 = sumMatriz(restaMatriz(sumMatriz(p5, p4), p2), p6)
-      val c_12 = sumMatriz(p1,p2)
-      val c_21 = sumMatriz(p3,p4)
+      val c_12 = sumMatriz(p1, p2)
+      val c_21 = sumMatriz(p3, p4)
       val c_22 = restaMatriz(restaMatriz(sumMatriz(p5, p1), p3), p7)
 
       Vector.tabulate(longitud, longitud)((i, j) => {
@@ -208,13 +212,13 @@ package object Matrices {
       })
 
 
-    }else{
+    } else {
       Vector(Vector(m1(0)(0) * m2(0)(0)))
     }
 
   }
 
-  def multStrassenPar(m1:Matriz,m2:Matriz): Matriz ={
+  def multStrassenPar(m1: Matriz, m2: Matriz): Matriz = {
     val longitud = m1.length
     val limite = 32
     if (longitud > limite) {
@@ -241,9 +245,9 @@ package object Matrices {
       val s9 = restaMatriz(a_11, a_21)
       val s10 = sumMatriz(b_11, b_12)
 
-      val t1 = task(parallel(multStrassenPar(a_11, s1),multStrassenPar(s2, b_22)))
-      val t2 = task(parallel(multStrassenPar(s3, b_11),multStrassenPar(a_22, s4)))
-      val t3 = task(parallel(multStrassenPar(s5, s6),multStrassenPar(s7, s8)))
+      val t1 = task(parallel(multStrassenPar(a_11, s1), multStrassenPar(s2, b_22)))
+      val t2 = task(parallel(multStrassenPar(s3, b_11), multStrassenPar(a_22, s4)))
+      val t3 = task(parallel(multStrassenPar(s5, s6), multStrassenPar(s7, s8)))
       val t4 = task(multStrassenPar(s9, s10))
 
       val (mult1, mult2) = t1.join()
@@ -265,12 +269,11 @@ package object Matrices {
 
 
     } else {
-      multStrassen(m1,m2)
+      multStrassen(m1, m2)
     }
   }
 
-
-
-
-
 }
+
+
+
